@@ -4,13 +4,13 @@ https://app.pluralsight.com/library/courses/nodejs-getting-started
 
 ---------------------
 
-###KEY Feature 
+## KEY Feature 
 -Asynchronous APIs w/out ever needing to deal w/ threads.
 --allows multiple requests to come in w/out freezing your API w/ a lack of threads since Node is single-threaded.
 
 
 
-###Running a script file - Module/Exports
+## Running a script file - Module/Exports
 
 //node wraps your code in the below function -> this is why you can use exports, module, require right out of the box!!
 ````
@@ -174,7 +174,7 @@ server.listen(4242, () => {
 
 ```
 
-###Template languages
+### Template languages
 -works as view engine for your server. Serve pages from these frameworks to allow dynamic, server-side data
 
 -Pug (formerly Jade)
