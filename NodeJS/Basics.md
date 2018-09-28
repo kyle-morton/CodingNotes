@@ -1,4 +1,7 @@
 #NodeJS Notes 
+
+https://app.pluralsight.com/library/courses/nodejs-getting-started
+
 ---------------------
 
 ##KEY Feature 
@@ -114,3 +117,67 @@ myEmitter.on('TEST', () => {
 
 
 ```
+
+###Simple Web Server
+
+```
+
+const http = require('http');
+
+//create server and bind to incoming request event w/ custom event-handler
+http.createServer((req, res) => {
+ 
+  //request & response are streams - req is readable, res is writable
+
+  console.dir(req, { depth: 0});
+  res.end('Hello World\n');
+});
+
+//start listening of server for given port
+server.listen(4242, () => {
+  console.log('Your NodeJS Server is running...');
+});
+
+```
+
+__NOTE:__ Run the below code to quickly get a package.json w/ defaults
+
+```
+npm init --yes
+```
+
+###Web Server Frameworks
+
+####Express
+-works differently as each url/operation has it's own request handler
+-makes working w/ web server in nodeJS __much easier__
+
+```
+
+//express top-level api returns a function
+const express = require('express');
+
+const server = express(); //call it here to get new server
+
+//url handlers come BEFORE server.listen
+server.get('/', (req, res) => {
+  res.send({ Name: 'Kyle' });
+});
+
+server.get('/about', (req, res) => {
+  res.send('about page!');
+});
+
+server.listen(4242, () => {
+  console.log('Express Server is running...');
+});
+
+```
+
+###Template languages
+-works as view engine for your server. Serve pages from these frameworks to allow dynamic, server-side data
+
+-Pug (formerly Jade)
+-Handlerbars
+-EJS
+-JSX
