@@ -1,0 +1,1 @@
+This repo is purely for note storage when learning new coding concepts
