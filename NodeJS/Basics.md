@@ -181,3 +181,28 @@ server.listen(4242, () => {
 -Handlerbars
 -EJS
 -JSX
+
+
+### OS Module (os)
+-use for interfacing w/ the host operating system that node is running on
+
+### FS Module (fs)
+-large built-in module for interfacing w/ files in NodeJS
+
+### Child Process (child_process)
+-allows you to run any os processes in a command shell inside of your Node app
+
+
+### Debugging Node apps
+-use below command on a given node file to debug using chrome tools
+
+```
+
+node --inspect-brk name_of_file.js
+
+```
+
+-once run, go to chrome then chrome://inspect in the url.
+-find your process within list of remote targets that you can debug, then click inspect
+
+__Note__: this works w/ javascript only.
