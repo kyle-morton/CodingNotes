@@ -122,6 +122,16 @@ npm un <package> -g //removes package from global
 
 ```
 
+### Pruning 
+-removes any node_module packages that are "extraneous" or not defined in package.json.
+
+```
+npm prune //prunes all unneeded dependencies
+
+npm prune --production //removes all dev-only dependencies
+
+```
+
 ### Install specific version
 -without version number on install, latest version is used.
 
@@ -163,3 +173,76 @@ npm update //installs latest version of dependencies
 npm update <package> //installs latest version for only this package
 
 ```
+
+### Visit source control repository for package from CLI
+
+```
+npm repo <package>
+```
+
+### Upgrade NPM to latest version
+
+```
+npm i npm@latest -g //NOTE: run this as an admin (VERY IMPORTANT)
+```
+
+----------
+
+## Publishing your own npm package
+
+### Create account and authenticate locally
+-create an account on npm site then use cli to add user account to local context
+-adds an npm auth token to your .rc file
+
+```
+npm adduser //prompts for username and password
+```
+
+### Steps to publishing package
+1) Setting up project in git
+2) Adding package.json file
+3) npm publish command
+
+https://github.com/kylemorton5770/NpmTestPackage 
+
+```
+npm publish //will publish project to npm (can be used for updates too)
+
+//after publish
+
+npm info <package> //will display info about package
+```
+
+### Tags (version labels)
+-When you're ready to push a new version, you can assign a version tag to it in npm as well as git so that version can be distinctly ID'd as a release.
+
+-this is necessary so you're versions in NPM match your source so any users can easily match then reference it.
+
+```
+//update version number in package.json and check-in
+
+git tag <version>
+git push --tags //pushes tags to git repo
+
+npm publish
+```
+
+### Publishing an update
+1) update code
+2) update version in package.json easily using NPM commands
+4) publish changes to npm/push to git
+
+```
+//updates your package.json, applys git tag, and 
+//commits changes in 1 step - push changes and you're done!
+npm version <major/minor/patch> 
+```
+
+### Releasing alpha and beta
+-same steps but use a --tag beta/alpha flag to npm publish
+
+```
+npm publish --tag beta
+```
+
+__Remember__: Once published, your package can be install using the normal 'npm i <package>' commands on any existing npm project.
