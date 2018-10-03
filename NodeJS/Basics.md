@@ -4,11 +4,19 @@ https://app.pluralsight.com/library/courses/nodejs-getting-started
 
 ---------------------
 
-## KEY Feature 
+
+## Concept 1
+-Node allows you to run javascript server-side by providing a wrapper around the V8 JavaScript Runtime (same used in chrome, firefox, etc)
+
+## Concept 2
 -Asynchronous APIs w/out ever needing to deal w/ threads.
 --allows multiple requests to come in w/out freezing your API w/ a lack of threads since Node is single-threaded.
 
+## Concept 3
+-Whenever a script is completed, the "Event Loop" in NodeJS is started. 
+-This cycles until it gets an event (file done reading, etc), then it emits the necessary event which triggers any set callbacks.
 
+__KEY:__ Asynchronicity from events which are monitored by the event loop. *Nothing blocks, all asynchronous!*
 
 ## Running a script file - Module/Exports
 
@@ -206,3 +214,90 @@ node --inspect-brk name_of_file.js
 -find your process within list of remote targets that you can debug, then click inspect
 
 __Note__: this works w/ javascript only.
+
+-------
+
+## File Uploads 
+
+### Read from file sent thru request
+
+```
+var server = http.createServer();
+server.on('request', function(request, response) {
+  
+  response.writeHead(200);
+
+
+  /* WITHOUT REQUEST.PIPE */
+
+  //read each chunk of file til complete
+  request.on('readable', function() {
+    var chunk = null;
+    while ((chunk = request.read()) !== null) {
+      console.log(chunk.toString()); //toString the chunk (b/c it's a buffer)
+      response.write(chunk); //toString not necessary b/c response.write does it for us
+    }
+  });
+
+  //send response on request end
+  request.on('end', function(){
+    response.end();
+  });
+
+  /* WITH REQUEST.PIPE */
+
+  request.pipe(response); //pipes all request data back to response
+  
+});
+
+```
+
+### Read file from request, write to file
+
+```
+
+var server = http.createServer();
+server.on('request', function(request, response) {
+  
+  var newFile = fs.createWriteStream('file_copy.md');
+  request.pipe(newFile); //direct request content stream to new file
+
+  request.on('end', function() {
+    console.log('uploaded!');
+  });
+
+});
+
+```
+
+### File Upload Progress
+
+```
+
+var server = http.createServer();
+server.on('request', function(request, response) {
+  
+  var newFile = fs.createWriteStream('file_copy.md');
+  var fileBytes = request.headers['content-length']; //get file length
+
+  var uploadedBytes = 0; //counter
+  
+  //readable event is just to keep track of current progress
+  request.on('readable', function() {
+    var chunk = null;
+    while(null !== (chunk = request.read())) {
+      
+      uploadedBytes += chunk.length;
+      var progress = (uploadedBytes / fileBytes) * 100; //current over total * 100
+
+      response.write('progress: ' + parseInt(progress, 10));
+
+    }
+  })
+
+  //direct request content stream to new file
+  request.pipe(newFile); 
+
+});
+
+```
